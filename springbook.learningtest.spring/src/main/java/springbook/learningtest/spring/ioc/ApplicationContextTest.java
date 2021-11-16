@@ -1,6 +1,7 @@
 package springbook.learningtest.spring.ioc;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
@@ -25,5 +26,11 @@ public class ApplicationContextTest {
 		helloDef.getPropertyValues().addPropertyValue("name", "Spring");
 		ac.registerBeanDefinition("hello2", helloDef);
 		
+		Hello hello2 = (Hello) ac.getBean("hello2");
+		assertThat(hello2.sayHello(), is("Hello Spring"));
+
+		assertThat(hello1, is(not(hello2)));
+		
+		assertThat(ac.getBeanFactory().getBeanDefinitionCount(), is(2));
 	}
 }
