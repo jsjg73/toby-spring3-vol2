@@ -19,4 +19,5 @@
     - XML파일과 같은 외부의 리소스로 빈 설정 메타정보를 리더를 통해 읽어들일 수 있음
     - 빈 설정정보 리더(BeanDefinitionReader 인터페이스의 구현 오브젝트)가 필요함.   
 ex) XmlBeanDefinitionReader
-    -
+- **GenericXmlApplicationContext**
+    - XmlBeanDefinitionReader를 내장함. xml 파일을 읽고 refresh까지 실행함.
