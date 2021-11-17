@@ -10,14 +10,19 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.context.support.StaticApplicationContext;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.StringUtils;
 
 import springbook.learningtest.spring.ioc.bean.Hello;
+import springbook.learningtest.spring.ioc.bean.Printer;
 import springbook.learningtest.spring.ioc.bean.StringPrinter;
 
 public class ApplicationContextTest {
+	private String basePath = StringUtils.cleanPath(ClassUtils.classPackageAsResourcePath(getClass()))+"/";
 	
 	@Test
 	public void registerBean(){
@@ -79,5 +84,25 @@ public class ApplicationContextTest {
 		hello.print();
 		
 		assertThat(ac.getBean("printer").toString(), is("Hello Spring"));
+	}
+	
+	@Test
+	public void contextHierachy() {
+		ApplicationContext parent = new GenericXmlApplicationContext(basePath+"parentContext.xml");
+		
+		GenericApplicationContext child = new GenericApplicationContext(parent);
+
+		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(child);
+		reader.loadBeanDefinitions(basePath+"childContext.xml");
+		child.refresh();
+		
+		Printer printer = child.getBean("printer", Printer.class);
+		assertThat(printer, is(notNullValue()));
+		
+		Hello hello = child.getBean("hello", Hello.class);
+		assertThat(hello, is(notNullValue()));
+		
+		hello.print();
+		assertThat(printer.toString(), is("Hello Child"));
 	}
 }
