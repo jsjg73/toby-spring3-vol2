@@ -61,6 +61,10 @@ IoC 컨테이너는 BeanDefinition을 참고하여 Bean 생성.
     5. 자바 코드에 의한 빈 등록: 일반 빈 클래스의 @Bean 메소드
 - **XML: <bean> 태그**
 - **XML: 네임스페이스와 전용 태그**
+    - 전용 태그
+      - [Appendix D. Extensible XML authoring](https://docs.spring.io/spring-framework/docs/3.0.x/spring-framework-reference/html/extensible-xml.html, "커스텀 XML 공식 레퍼런스") 참고
+      - 커스터 XML bean definition parser를 작성하고 IoC 컨테이너에 건네준다.
+      - XML Schema를 사용해야한다.(XML Schema 설정이 익숙치 않다면 [Appendix C. XML Schema-based configuration](https://docs.spring.io/spring-framework/docs/3.0.x/spring-framework-reference/html/xsd-config.html)를 참고하자.)
 - **자동인식을 이용한 빈 등록: 스테레오타입 애노테이션과 빈 스캐너**
 - **자바 코드에 의한 빈 등록: @Configuration 클래스의 @Bean 메소드**
 - **자바 코드에 의한 빈 등록: 일반 빈 클래스의 @Bean 메소드**
