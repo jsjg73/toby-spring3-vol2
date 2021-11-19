@@ -69,4 +69,5 @@ IoC 컨테이너는 BeanDefinition을 참고하여 Bean 생성.
       - XML Schema를 사용해야한다.(XML Schema 설정이 익숙치 않다면 [Appendix C. XML Schema-based configuration](https://docs.spring.io/spring-framework/docs/3.0.x/spring-framework-reference/html/xsd-config.html)를 참고하자.)
 - **자동인식을 이용한 빈 등록: 스테레오타입 애노테이션과 빈 스캐너**
 - **자바 코드에 의한 빈 등록: @Configuration 클래스의 @Bean 메소드**
+    - 기술 서비스 빈이나 컨테이너 설정 빈등은 스테레오 타입 애노테이션이 없을 수 있으므로, 자바 코드를 이용한 설정 메타정보로 만든다. 이 방식을 웹 어플리케이션에 적용하려면, 루트 컨텍스트와 서블릿 컨텍스트의 컨텍스트 클래스를 AnnotationConfigWebApplicationContext 클래스로 변경해줘야한다. 물론 스캔 대상 패키지도 지정해줘야한다.
 - **자바 코드에 의한 빈 등록: 일반 빈 클래스의 @Bean 메소드**
