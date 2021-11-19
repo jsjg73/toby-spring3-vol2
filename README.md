@@ -61,6 +61,7 @@ IoC 컨테이너는 BeanDefinition을 참고하여 Bean 생성.
     5. 자바 코드에 의한 빈 등록: 일반 빈 클래스의 @Bean 메소드
 - **XML: <bean> 태그**
     - BeanDefinition을 코드에서 직접 만드는 방법을 제외하면, XML을 사용하는 것이 모든 종류의 빈 설정 메타정보 항목을 지정할 수 있는 유일한 방법이다.
+    - 실행 전에는 타입 안전성을 보장할 수 없다.
 - **XML: 네임스페이스와 전용 태그**
     - 전용 태그
       - [Appendix D. Extensible XML authoring](https://docs.spring.io/spring-framework/docs/3.0.x/spring-framework-reference/html/extensible-xml.html, "커스텀 XML 공식 레퍼런스") 참고
