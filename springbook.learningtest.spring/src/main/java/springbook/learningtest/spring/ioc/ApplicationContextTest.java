@@ -3,9 +3,11 @@ package springbook.learningtest.spring.ioc;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.RootBeanDefinition;
@@ -115,5 +117,20 @@ public class ApplicationContextTest {
 		AnnotatedHello hello = ac.getBean(AnnotatedHello.class);
 		
 		assertThat(hello, is(notNullValue()));
+	}
+	
+	@Test
+	public void scanningBeanWithXML() {
+		GenericXmlApplicationContext ac = new GenericXmlApplicationContext(basePath+"filteredScanningContext.xml");
+		
+		assertThat(ac.getBean(AnnotatedHello.class), is(notNullValue()));
+		assertThat(ac.getBean(Hello.class), is(notNullValue()));
+	}
+	
+	@Test(expected = NoSuchBeanDefinitionException.class)
+	public void failScanningBeanWithWorngBasePackage() {
+		GenericXmlApplicationContext ac = new GenericXmlApplicationContext(basePath+"filteredScanningContext.xml");
+		
+		assertThat(ac.getBean(UndetecedHello.class), nullValue());
 	}
 }
