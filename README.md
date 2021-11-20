@@ -60,7 +60,15 @@ IoC 컨테이너는 BeanDefinition을 참고하여 Bean 생성.
     4. 자바 코드에 의한 빈 등록: @Configuration 클래스의 @Bean 메소드
     5. 자바 코드에 의한 빈 등록: 일반 빈 클래스의 @Bean 메소드
 - **XML: <bean> 태그**
+    - BeanDefinition을 코드에서 직접 만드는 방법을 제외하면, XML을 사용하는 것이 모든 종류의 빈 설정 메타정보 항목을 지정할 수 있는 유일한 방법이다.
+    - 실행 전에는 타입 안전성을 보장할 수 없다.
 - **XML: 네임스페이스와 전용 태그**
+    - 전용 태그
+      - [Appendix D. Extensible XML authoring](https://docs.spring.io/spring-framework/docs/3.0.x/spring-framework-reference/html/extensible-xml.html, "커스텀 XML 공식 레퍼런스") 참고
+      - 커스터 XML bean definition parser를 작성하고 IoC 컨테이너에 건네준다.
+      - XML Schema를 사용해야한다.(XML Schema 설정이 익숙치 않다면 [Appendix C. XML Schema-based configuration](https://docs.spring.io/spring-framework/docs/3.0.x/spring-framework-reference/html/xsd-config.html)를 참고하자.)
 - **자동인식을 이용한 빈 등록: 스테레오타입 애노테이션과 빈 스캐너**
 - **자바 코드에 의한 빈 등록: @Configuration 클래스의 @Bean 메소드**
+    - 기술 서비스 빈이나 컨테이너 설정 빈등은 스테레오 타입 애노테이션이 없을 수 있으므로, 자바 코드를 이용한 설정 메타정보로 만든다. 이 방식을 웹 어플리케이션에 적용하려면, 루트 컨텍스트와 서블릿 컨텍스트의 컨텍스트 클래스를 AnnotationConfigWebApplicationContext 클래스로 변경해줘야한다. 물론 스캔 대상 패키지도 지정해줘야한다.
+    - XML 태그 방식의 빈 설정의 유용한 점은 aop, tx 등 전용 태그를 지원하는 것이다. 자바 코드 방식에서도 대응 되는 빈을 직접 @Configuration 클래스 안에 작성해 주면 기능은 사용할 수 있다. 다만 편리함은 줄어든다. 전용 태그에 대응되는 @Configuration 클래스 설정 방식은 스프링 3.1 부터 지원된다.
 - **자바 코드에 의한 빈 등록: 일반 빈 클래스의 @Bean 메소드**
