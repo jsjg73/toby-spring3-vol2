@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
@@ -132,5 +133,21 @@ public class ApplicationContextTest {
 		GenericXmlApplicationContext ac = new GenericXmlApplicationContext(basePath+"filteredScanningContext.xml");
 		
 		assertThat(ac.getBean(UndetecedHello.class), nullValue());
+	}
+	
+	@Test
+	public void configurationBean() {
+		ApplicationContext ac = new AnnotationConfigApplicationContext(AnnotatedHelloConfig.class);
+		assertThat(ac.getBean("annotatedHello", AnnotatedHello.class), is(notNullValue()));
+	}
+	
+	@Test
+	public void configurationMethosReturnSameInstance() {
+		AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(AnnotatedHelloConfig.class);
+		
+		AnnotatedHelloConfig config = ac.getBean(AnnotatedHelloConfig.class);
+		assertThat(config, is(not(nullValue())));
+		
+		assertThat(config.annotatedHello(), is(sameInstance(config.annotatedHello())));
 	}
 }
