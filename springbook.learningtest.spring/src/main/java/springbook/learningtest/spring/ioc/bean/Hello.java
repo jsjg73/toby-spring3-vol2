@@ -3,6 +3,12 @@ package springbook.learningtest.spring.ioc.bean;
 public class Hello {
 	String name;
 	Printer printer;
+	public Hello() {};
+	public Hello(String name, Printer printer) {
+		super();
+		this.name = name;
+		this.printer = printer;
+	}
 
 	public String sayHello() {
 		return "Hello " + name;

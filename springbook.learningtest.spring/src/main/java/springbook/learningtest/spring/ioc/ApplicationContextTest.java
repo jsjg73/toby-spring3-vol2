@@ -150,4 +150,27 @@ public class ApplicationContextTest {
 		
 		assertThat(config.annotatedHello(), is(sameInstance(config.annotatedHello())));
 	}
+	
+	@Test
+	public void constructorArgName() {
+		GenericApplicationContext ac = new GenericXmlApplicationContext(basePath+"constructorNameContext.xml");
+		assertThatInjectingPrinterInHello(ac, "Spring");
+	}
+	@Test
+	public void constructorArgIndex() {
+		GenericApplicationContext ac = new GenericXmlApplicationContext(basePath+"constructorIndexContext.xml");
+		assertThatInjectingPrinterInHello(ac, "Spring");
+	}
+	@Test
+	public void constructorArgType() {
+		GenericApplicationContext ac = new GenericXmlApplicationContext(basePath+"constructorTypeContext.xml");
+		assertThatInjectingPrinterInHello(ac, "Spring");
+	}
+	
+	private void assertThatInjectingPrinterInHello(ApplicationContext ac, String name) {
+		Hello h = ac.getBean("hello", Hello.class);
+		h.print();
+		
+		assertThat(ac.getBean("printer").toString(), is("Hello "+name));
+	}
 }
