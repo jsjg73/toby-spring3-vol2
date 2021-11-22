@@ -173,4 +173,11 @@ public class ApplicationContextTest {
 		
 		assertThat(ac.getBean("printer").toString(), is("Hello "+name));
 	}
+	
+	@Test
+	public void xmlAutowire() {
+		GenericApplicationContext ac = new GenericXmlApplicationContext(basePath+"autowire.xml");
+		
+		assertThatInjectingPrinterInHello(ac, "Spring");
+	}
 }
