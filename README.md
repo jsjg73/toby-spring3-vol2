@@ -80,3 +80,10 @@ IoC 컨테이너는 BeanDefinition을 참고하여 Bean 생성.
     - XML 태그 방식의 빈 설정의 유용한 점은 aop, tx 등 전용 태그를 지원하는 것이다. 자바 코드 방식에서도 대응 되는 빈을 직접 @Configuration 클래스 안에 작성해 주면 기능은 사용할 수 있다. 다만 편리함은 줄어든다. 전용 태그에 대응되는 @Configuration 클래스 설정 방식은 스프링 3.1 부터 지원된다.
     - @Configuation 클래스는 CGLIB를 요구한다. 스프링은 @Bean 메소드 호출을 CGLIB proxy를 통해 처리한다. 그리고 @Bean메소드는 항상  동일한 인스턴스를 반환한다.
 - **자바 코드에 의한 빈 등록: 일반 빈 클래스의 @Bean 메소드**
+#### 빈 의존관계 설정 방법
+- ***XML: <constructor-arg>***
+     - name, type, index를 사용해서 DI 할 수 있음
+- ***XML: 자동와이어링***
+     - <bean id=... class=... autowire="byName">
+     - byName, byType 등
+     - xml 문서를 간소화 시켜줌
