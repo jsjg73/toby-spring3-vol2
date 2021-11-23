@@ -84,12 +84,12 @@ IoC 컨테이너는 BeanDefinition을 참고하여 Bean 생성.
 - ***XML: <constructor-arg>***
      - name, type, index를 사용해서 DI 할 수 있음
 - ***XML: 자동와이어링***
-     - <bean id=... class=... autowire="byName">
+     - \<bean id=... class=... autowire="byName"\>
      - byName, byType 등
      - xml 문서를 간소화 시켜줌
 - ***애노테이션: @Resource***
-      - 수정자와 필드에 적용할 수 있다.
-      - 클래스가 빈으로 등록된 후에 후처리기에 의해서 @Resource를 처리한다.
-      - 즉, @Resource를 가진 클래스의 DI가 이뤄지기 위해선 먼저 클래스가 빈으로 등록되어야한다.
-      - <context:annotation-config />
-      - <context:component-scan base-pakage="..." />
+     - 수정자와 필드에 적용할 수 있다.
+     - 클래스가 빈으로 등록된 후에 후처리기에 의해서 @Resource를 처리한다.
+     - 즉, @Resource를 가진 클래스의 DI가 이뤄지기 위해선 먼저 클래스가 빈으로 등록되어야한다.
+     - \<context:annotation-config /\>
+     - \<context:component-scan base-pakage="..." /\>
