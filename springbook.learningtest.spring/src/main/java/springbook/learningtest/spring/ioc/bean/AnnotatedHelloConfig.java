@@ -1,9 +1,7 @@
-package springbook.learningtest.spring.ioc;
+package springbook.learningtest.spring.ioc.bean;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import springbook.learningtest.spring.ioc.bean.AnnotatedHello;
 
 @Configuration
 public class AnnotatedHelloConfig {
