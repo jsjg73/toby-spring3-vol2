@@ -7,7 +7,7 @@
 	http://www.springframework.org/schema/context
 	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	
-	<context:property-placeholder location="classpath:database.properties" />
+	<context:property-placeholder location="classpath:springbook/learningtest/spring/ioc/database.properties" />
 	<context:annotation-config/>
 	<bean id="external" class="springbook.learningtest.spring.ioc.property.ExternalResource"/>
 	

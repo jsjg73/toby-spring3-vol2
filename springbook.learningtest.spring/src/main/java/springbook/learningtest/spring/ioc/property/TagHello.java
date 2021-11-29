@@ -5,13 +5,13 @@ import org.springframework.beans.factory.annotation.Value;
 
 import springbook.learningtest.spring.ioc.bean.Printer;
 
-public class Hello {
+public class TagHello {
 	
 	String name;
 	@Autowired
 	Printer printer;
-	public Hello() {};
-	public Hello(String name, Printer printer) {
+	public TagHello() {};
+	public TagHello(String name, Printer printer) {
 		super();
 		this.name = name;
 		this.printer = printer;

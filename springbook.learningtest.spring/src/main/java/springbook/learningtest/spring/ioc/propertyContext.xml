@@ -9,7 +9,7 @@
 	
 	<context:annotation-config />
 	
-	<bean id="hello" class="springbook.learningtest.spring.ioc.property.Hello"/>
+	<bean id="hello" class="springbook.learningtest.spring.ioc.property.TagHello"/>
 	
 	<bean id="printer" class="springbook.learningtest.spring.ioc.bean.StringPrinter"/>
 </beans>
