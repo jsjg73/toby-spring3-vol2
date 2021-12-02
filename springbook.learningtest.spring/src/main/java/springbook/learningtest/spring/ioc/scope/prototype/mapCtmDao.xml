@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+	
+	<bean id="mapCtmDao" class="springbook.learningtest.spring.ioc.scope.prototype.ServiceRequestFormTest$MapCustomerDao">
+		<property name="register" ref="brown"/>
+	</bean>
+	<util:map id="brown" map-class="java.util.HashMap" key-type="java.lang.Integer" value-type="springbook.learningtest.spring.ioc.scope.prototype.ServiceRequestFormTest$Customer"> 
+	 	<entry key="1">
+		 	<bean class="springbook.learningtest.spring.ioc.scope.prototype.ServiceRequestFormTest$Customer">
+		 		<property name="id" value="1"/>
+		 		<property name="no" value="001"/>
+		 		<property name="name" value="harry"/>
+		 	</bean>
+	 	</entry>
+		<entry key="2">
+		 	<bean class="springbook.learningtest.spring.ioc.scope.prototype.ServiceRequestFormTest$Customer">
+		 		<property name="id" value="2"/>
+		 		<property name="no" value="002"/>
+		 		<property name="name" value="brown"/>
+		 	</bean>
+	 	</entry>
+	</util:map>
+</beans>
