@@ -7,19 +7,19 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 	
-	<bean id="mapCtmDao" class="springbook.learningtest.spring.ioc.scope.prototype.ServiceRequestFormTest$MapCustomerDao">
+	<bean id="mapCtmDao" class="springbook.learningtest.spring.ioc.scope.prototype.dao.MapCustomerDao">
 		<property name="register" ref="brown"/>
 	</bean>
-	<util:map id="brown" map-class="java.util.HashMap" key-type="java.lang.Integer" value-type="springbook.learningtest.spring.ioc.scope.prototype.ServiceRequestFormTest$Customer"> 
+	<util:map id="brown" map-class="java.util.HashMap" key-type="java.lang.Integer" value-type="springbook.learningtest.spring.ioc.scope.prototype.dto.Customer"> 
 	 	<entry key="1">
-		 	<bean class="springbook.learningtest.spring.ioc.scope.prototype.ServiceRequestFormTest$Customer">
+		 	<bean class="springbook.learningtest.spring.ioc.scope.prototype.dto.Customer">
 		 		<property name="id" value="1"/>
 		 		<property name="no" value="001"/>
 		 		<property name="name" value="harry"/>
 		 	</bean>
 	 	</entry>
 		<entry key="2">
-		 	<bean class="springbook.learningtest.spring.ioc.scope.prototype.ServiceRequestFormTest$Customer">
+		 	<bean class="springbook.learningtest.spring.ioc.scope.prototype.dto.Customer">
 		 		<property name="id" value="2"/>
 		 		<property name="no" value="002"/>
 		 		<property name="name" value="brown"/>
