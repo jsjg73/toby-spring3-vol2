@@ -1,6 +1,10 @@
 package springbook.learningtest.spring.ioc.scope.prototype.dto;
 
+import springbook.learningtest.spring.ioc.scope.prototype.dao.CustomerDao;
+
 public class ServiceRequest {
+	private CustomerDao customerDao;
+	
 	Customer customer;
 	String productNo;
 	String descripton;
@@ -33,6 +37,18 @@ public class ServiceRequest {
 
 	public void setDescripton(String descripton) {
 		this.descripton = descripton;
+	}
+
+	public void setCustomerDao(CustomerDao dao) {
+		this.customerDao = dao;
+	}
+
+	public void setCustomerByCustomerNo(String customerNo) {
+		customer = this.customerDao.findCustomerByNo(customerNo);
+	}
+
+	public void setCustomerByCustomerId(int id) {
+		customer = this.customerDao.getCustomer(id);		
 	}
 	
 }
