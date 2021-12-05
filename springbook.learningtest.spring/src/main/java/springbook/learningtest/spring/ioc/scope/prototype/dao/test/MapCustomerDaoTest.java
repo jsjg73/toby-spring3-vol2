@@ -1,4 +1,4 @@
-package springbook.learningtest.spring.ioc.scope.prototype;
+package springbook.learningtest.spring.ioc.scope.prototype.dao.test;
 
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.core.io.ClassPathResource;

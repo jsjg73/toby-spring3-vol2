@@ -8,7 +8,6 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
-import springbook.learningtest.spring.ioc.scope.prototype.CustomerDao;
 import springbook.learningtest.spring.ioc.scope.prototype.dto.Customer;
 
 public class EmbeddedDbCustomerDao implements CustomerDao {

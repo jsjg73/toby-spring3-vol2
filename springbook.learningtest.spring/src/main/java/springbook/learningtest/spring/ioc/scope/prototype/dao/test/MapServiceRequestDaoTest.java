@@ -1,4 +1,4 @@
-package springbook.learningtest.spring.ioc.scope.prototype;
+package springbook.learningtest.spring.ioc.scope.prototype.dao.test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

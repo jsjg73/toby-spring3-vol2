@@ -1,4 +1,4 @@
-package springbook.learningtest.spring.ioc.scope.prototype;
+package springbook.learningtest.spring.ioc.scope.prototype.dao.test;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
@@ -11,6 +11,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
+import springbook.learningtest.spring.ioc.scope.prototype.dao.CustomerDao;
 import springbook.learningtest.spring.ioc.scope.prototype.dao.EmbeddedDbCustomerDao;
 
 public class EmbeddedDbCustomerDaoTest extends CustomerDaoTest {
@@ -38,8 +39,8 @@ public class EmbeddedDbCustomerDaoTest extends CustomerDaoTest {
 		@Bean
 		public EmbeddedDatabase datasource() {
 			return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.HSQL)
-					.addScript("classpath:springbook/learningtest/spring/ioc/scope/prototype/customer-schema.sql")
-					.addScript("classpath:springbook/learningtest/spring/ioc/scope/prototype/customer-data.sql")
+					.addScript("classpath:springbook/learningtest/spring/ioc/scope/prototype/dao/test/customer-schema.sql")
+					.addScript("classpath:springbook/learningtest/spring/ioc/scope/prototype/dao/test/customer-data.sql")
 					.build();
 		}
 	}

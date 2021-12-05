@@ -1,4 +1,4 @@
-package springbook.learningtest.spring.ioc.scope.prototype;
+package springbook.learningtest.spring.ioc.scope.prototype.dao.test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -6,6 +6,8 @@ import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
+
+import springbook.learningtest.spring.ioc.scope.prototype.dao.CustomerDao;
 import springbook.learningtest.spring.ioc.scope.prototype.dto.Customer;
 
 public abstract class CustomerDaoTest {
@@ -26,9 +28,12 @@ public abstract class CustomerDaoTest {
 	
 	@Test
 	public void findCustomerByNO() {
-		assertThat(dao.getCount(), is(2));
-		
 		Customer harry = dao.findCustomerByNo("001");
 		assertThat(harry.getName(), is("harry"));
+	}
+	
+	@Test
+	public void getCoutn() {
+		assertThat(dao.getCount(), is(2));
 	}
 }
