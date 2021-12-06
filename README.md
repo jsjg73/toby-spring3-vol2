@@ -109,5 +109,30 @@ IoC 컨테이너는 BeanDefinition을 참고하여 Bean 생성.
     - 코드에서 new로 오브젝트를 생성하는 것을 대신한다.
     - 컨테이너가 오브젝트를 만들고 초기화해야하는 경우가 간혹있다. DI 때문이다.
     - 사용자의 요청마다 새로운 오브젝트가 필요하면서, 다른 빈을 주입받아야할 때 유용하다.
+ - ***Dl 전략들***  
+      1. 기본적인 방법
+         - 컨테이너 빈에 직접 getBean(..) 호출한다. 비즈니스 코드에 스프링 API가 직접 등장하는 단점이 있다.
+      2. ObjectFactory, ObjectFactoryCreatingFactoryBean
+      3. ServiceLocatorFactoryBean
+      4. 메소드 주입
+         - 빈 설정
+            ```XML
+            <bean id="controllerA" class = "...ControllerA">
+                <lookup-method name= "getPrototypeBean" bean="prototypeBean"/>
+            </bean>
 
+            <bean id="prototypeBean" class="...PrototypeBean" scope="prototype"/>
+            ```
+         - Java code
+            ``` JAVA
+            static abstract class ControllerA {
+                abstract public PrototypeBean getPrototypeBean();
+            }
+            
+            static class PrototypeBean{String name = "hello";}
+            ```
+        
+       
+        
+         
 
