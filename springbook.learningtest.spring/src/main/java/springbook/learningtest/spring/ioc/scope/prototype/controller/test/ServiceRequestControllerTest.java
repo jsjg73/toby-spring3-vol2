@@ -4,36 +4,50 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 
 import springbook.learningtest.spring.ioc.scope.prototype.controller.ServiceRequestController;
+import springbook.learningtest.spring.ioc.scope.prototype.dao.CustomerDao;
+import springbook.learningtest.spring.ioc.scope.prototype.dto.Customer;
 import springbook.learningtest.spring.ioc.scope.prototype.dto.ServiceRequest;
 import springbook.learningtest.spring.ioc.scope.prototype.service.ServiceRequestService;
 
 public class ServiceRequestControllerTest {
 	ServiceRequest input;
+	ApplicationContext ac;
 	@Before
 	public void setUp() {
-		input = new ServiceRequest("001", "Harry의 A/S 요청");
+		ac = new AnnotationConfigApplicationContext(TestSrvReqControllerConfig.class);
+		input = ac.getBean(ServiceRequest.class);
 	}
 	
 	@Test
 	public void serviceRequestFormSubmit() {
-		ApplicationContext ac = new AnnotationConfigApplicationContext(TestSrvReqControllerConfig.class);
 		ServiceRequestController controller = ac.getBean(ServiceRequestController.class);
 		controller.serviceRequestFormSubmit(input);
 		
 		assertThat(input.getCustomer(), notNullValue());
-		assertThat(input.getClass().getName(), is("Harry"));
+		assertThat(input.getCustomer().getName(), is("harry"));
 	}
 	
 	@Configuration
 	static class TestSrvReqControllerConfig {
+		@Bean
+		@Scope("prototype")
+		public ServiceRequest serviceRequest() {
+			ServiceRequest sr = new ServiceRequest("001", "Harry의 A/S 요청");
+			sr.setCustomerDao(mockCustomerDao());
+			return sr;
+		}
 		@Bean
 		public ServiceRequestController serviceRequestController() {
 			ServiceRequestController srvReqCtrl = new ServiceRequestController();
@@ -44,9 +58,47 @@ public class ServiceRequestControllerTest {
 		public MockServiceRequestService mockServiceRequestService() {
 			return new MockServiceRequestService();
 		}
+		
+		@Bean
+		public MockCustomerDao mockCustomerDao() {
+			MockCustomerDao dao = new MockCustomerDao();
+			Customer harry = customer();
+			dao.byNo.put(harry.getNo(), harry);
+			dao.byId.put(harry.getId(), harry);
+			return dao;
+		}
+		@Bean
+		public Customer customer() {
+			Customer harry = new Customer();
+			harry.setId(1);
+			harry.setNo("001");
+			harry.setName("harry");
+			return harry;
+		}
 	}
+	
 	private static class MockServiceRequestService extends ServiceRequestService{
 		@Override
 		public void addNewServiceRequest(ServiceRequest serviceRequest) {}
+	}
+	
+	static class MockCustomerDao implements CustomerDao{
+		Map<String, Customer> byNo = new HashMap<>();
+		Map<Integer, Customer> byId = new HashMap<>();
+		
+		@Override
+		public Customer findCustomerByNo(String customerNo) {
+			return byNo.get(customerNo);
+		}
+
+		@Override
+		public Customer getCustomer(int customerId) {
+			return byId.get(customerId);
+		}
+
+		@Override
+		public int getCount() {
+			return byId.size();
+		}
 	}
 }

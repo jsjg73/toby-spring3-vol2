@@ -9,6 +9,10 @@ public class ServiceRequestController {
 		this.srvReqSrv = srvReqSrv;
 	}
 	public void serviceRequestFormSubmit(/* HttpServletRequest request */ServiceRequest serviceRequest) {
+		int id  =1;
+		/*id = request.getParameter("id");*/
+		serviceRequest.setCustomerByCustomerId(id);
 		srvReqSrv.addNewServiceRequest(serviceRequest);
+		
 	}
 }
