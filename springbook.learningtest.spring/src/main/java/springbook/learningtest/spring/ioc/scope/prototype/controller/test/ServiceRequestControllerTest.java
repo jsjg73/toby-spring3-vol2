@@ -9,6 +9,8 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.beans.factory.config.ObjectFactoryCreatingFactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +29,8 @@ public class ServiceRequestControllerTest {
 	@Before
 	public void setUp() {
 		ac = new AnnotationConfigApplicationContext(TestSrvReqControllerConfig.class);
-		input = ac.getBean(ServiceRequest.class);
+		ObjectFactory<ServiceRequest> serviceRequestFactory = ac.getBean(ObjectFactory.class);
+		input = serviceRequestFactory.getObject();
 	}
 	
 	@Test
@@ -41,6 +44,14 @@ public class ServiceRequestControllerTest {
 	
 	@Configuration
 	static class TestSrvReqControllerConfig {
+		@Bean
+		public ObjectFactoryCreatingFactoryBean serviceRequestFactory() {
+			ObjectFactoryCreatingFactoryBean factoryBean =
+					new ObjectFactoryCreatingFactoryBean();
+			factoryBean.setTargetBeanName("serviceRequest");
+			return factoryBean;
+		}
+		
 		@Bean
 		@Scope("prototype")
 		public ServiceRequest serviceRequest() {
