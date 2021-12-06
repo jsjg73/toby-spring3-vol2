@@ -1,7 +1,9 @@
 package springbook.learningtest.spring.ioc.scope.prototype.controller.test;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import java.util.HashMap;
@@ -11,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.ObjectFactoryCreatingFactoryBean;
+import org.springframework.beans.factory.config.ServiceLocatorFactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -29,13 +32,36 @@ public class ServiceRequestControllerTest {
 	@Before
 	public void setUp() {
 		ac = new AnnotationConfigApplicationContext(TestSrvReqControllerConfig.class);
-		ObjectFactory<ServiceRequest> serviceRequestFactory = ac.getBean(ObjectFactory.class);
-		input = serviceRequestFactory.getObject();
+//		ObjectFactory<ServiceRequest> serviceRequestFactory = ac.getBean(ObjectFactory.class);
+//		input = serviceRequestFactory.getObject();
+		input = ac.getBean(ServiceRequestFactory.class).getServiceFactory();
+	}
+	
+	@Test
+	public void serviceLocatorFactoryBeanUsingBeanName() {
+		NameFactory nf = ac.getBean(NameFactory.class);
+		ServiceA first1 = nf.getBean("first");
+		ServiceA first2 = nf.getBean("first");
+		ServiceA second = nf.getBean("second");
+		
+		assertThat(first1, notNullValue());
+		assertThat(second, notNullValue());
+		assertThat(first1, is(not(first2)));
+	}
+	interface NameFactory {
+		ServiceA getBean(String name);
+	}
+	static class ServiceA{
+		String name;
+		public ServiceA(String name) {
+			this.name = name;
+		}
 	}
 	
 	@Test
 	public void serviceRequestFormSubmit() {
 		ServiceRequestController controller = ac.getBean(ServiceRequestController.class);
+		assertThat(input.getCustomer(), nullValue());
 		controller.serviceRequestFormSubmit(input);
 		
 		assertThat(input.getCustomer(), notNullValue());
@@ -86,6 +112,32 @@ public class ServiceRequestControllerTest {
 			harry.setName("harry");
 			return harry;
 		}
+		
+		//ServiceRequest¿¸øÎ¿∏∑Œ ∏∏µÁ ∆—≈‰∏Æ ∫Û
+		@Bean
+		public ServiceLocatorFactoryBean serviceLocatorFactoryBean() {
+			ServiceLocatorFactoryBean slfb = new ServiceLocatorFactoryBean();
+			slfb.setServiceLocatorInterface(ServiceRequestFactory.class);
+			return slfb;
+		}
+		
+		@Bean
+		public ServiceLocatorFactoryBean nameFactoryBean() {
+			ServiceLocatorFactoryBean sf = new ServiceLocatorFactoryBean();
+			sf.setServiceLocatorInterface(NameFactory.class);
+			return sf;
+		}
+		@Bean
+		@Scope("prototype")
+		public ServiceA first() {
+			return new ServiceA("first");
+		}
+		
+		@Bean
+		@Scope("prototype")
+		public ServiceA second() {
+			return new ServiceA("second");
+		}
 	}
 	
 	private static class MockServiceRequestService extends ServiceRequestService{
@@ -111,5 +163,9 @@ public class ServiceRequestControllerTest {
 		public int getCount() {
 			return byId.size();
 		}
+	}
+	
+	public interface ServiceRequestFactory{
+		ServiceRequest getServiceFactory();
 	}
 }
