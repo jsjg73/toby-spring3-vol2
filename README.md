@@ -131,6 +131,18 @@ IoC 컨테이너는 BeanDefinition을 참고하여 Bean 생성.
             
             static class PrototypeBean{String name = "hello";}
             ```
+      5. Provider<T>  
+         - JavaEE 6 이후 등장한 Provider 인터페이스. @Inject와 함께 JSR-330(DIJ)에 추가된 표준 인터페이스.
+         - @Autowire, @Resource 혹은 @Inject로 Provider 인터페이스를 지정하면, 스프링이 자동으로 오브젝트 생성 주입.
+         - 예,
+           ``` Java
+           @Inject Provider<PrototypeBean> prototypeProvider;
+
+           public void usingPrototypeBean(){
+               PrototypeBean bean = this.prototypeProvider.get();
+               ...
+           }
+           ```
         
        
         
