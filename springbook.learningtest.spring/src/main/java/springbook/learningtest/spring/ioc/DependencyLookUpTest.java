@@ -4,10 +4,16 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 
+import javax.inject.Provider;
+
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Component;
 
 public class DependencyLookUpTest {
 
@@ -15,6 +21,8 @@ public class DependencyLookUpTest {
 		abstract public PrototypeBean getPrototypeBean();
 	}
 	
+	@Component()
+	@Scope("prototype")
 	static class PrototypeBean{String name = "hello";}
 	
 	@Test
@@ -27,5 +35,25 @@ public class DependencyLookUpTest {
 		
 		assertThat(bean1.name, is("hello"));
 		assertThat(bean1, is(not(bean2)));
+	}
+	
+	@Test
+	public void DLbyProvider() {
+		ApplicationContext ac = new AnnotationConfigApplicationContext(Client.class, PrototypeBean.class);
+		Client client = ac.getBean(Client.class);
+		
+		PrototypeBean bean1 = client.get();
+		PrototypeBean bean2 = client.get();
+		
+		assertThat(bean1.name, is("hello"));
+		assertThat(bean1, is(not(bean2)));
+		
+	}
+	static class Client{
+		@Autowired Provider<PrototypeBean> provider;
+		
+		public PrototypeBean get() {
+			return provider.get();
+		}
 	}
 }
