@@ -161,6 +161,38 @@ IoC 컨테이너는 BeanDefinition을 참고하여 Bean 생성.
     - 웹 어플리케이션마다 스프링의 애플리케이션도 만들어진다.
     - 멀티스레드 환경에서 안전하도록 만들어야한다.
 
+- ***스코프 빈 사용법***
+    - 프로토타입 빈과 마찬가지로 DL방식을 사용한다.
+    - 또는, 스프링이 제공하는 특별한 방식의 DI(프록시)를 사용할 수도 있다. 
+    - 
+       ``` JAVA
+      @Scope(value= "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
+      public class LoginUser {...
+      ```
+      ``` Java
+      public class LoginService {
+          @Autowired LoginUser loginUser;
+
+          public void login(Login login){
+              //로그인 처리
+              this.loginUser.setLoginId(...); // 세션이 다르면 다른 오브젝트의 메소드가 호출된다!!
+              ...
+          }
+      }
+      ```
+      **주의** : LoginService 클래스의 loginUser 필드는 @Autowired로 마치 싱글톤 빈이 주입된것 처럼 보일 수 있다. loginUser가 싱글톤이라면 setLoginId(...)가 호출되는 것은 문제가 있는 코드다. 하지만 세션 스코프 빈이기 때문에 정상적인 코드다.
+    - 아래는 동일한 구조를 xml로 표현한 것이다.
+      ``` xml
+        <bean id="loginUser" class="...LoginUser" scope="session">
+            <aop:scoped-proxy proxy-target-class="true"/>
+        </bean>
+      ```
+- Q : **프로토 타입 빈과 스코프 빈의 공통점 및 차이점**  
+  A :    
+  **공통점** - 하나 이상의 빈 오브젝트가 생성된다.   
+  **차이점** - 프로토 타입 빈의 생명 주기는 빈이 주입되는 오브젝트에 의해 결정된다. 반면에 스코프 빈의 생명주기는 여전히 스프링이 관리한다.
+- Q : **왜 싱글톤 빈에 스코프 빈을 주입할 수 없을까?**   
+  A : 싱글톤 빈이 참조하는 빈들을 주입하는 시점과 관련있다. 어플리케이션 컨텍스를 초기화할 때 빈 생성과 DI가 이뤄진다. 초기화 시점에는 스코프 빈을 생성할 수 없다.(웹 요청 등이 발생해야한다.) 그렇기 때문에 스코프 빈을 주입하도록 설정된 싱글폰 빈은 초기화시 에러를 일으키게 된다.
         
        
         
