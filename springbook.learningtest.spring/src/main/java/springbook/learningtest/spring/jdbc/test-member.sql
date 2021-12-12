@@ -1,0 +1,5 @@
+CREATE TABLE MEMBER (
+    id INT PRIMARY KEY,
+    name VARCHAR(100),
+    point FLOAT
+);
