@@ -17,6 +17,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 public class JdbcSqlParameterTest {
 	EmbeddedDatabase db;
 	SimpleJdbcTemplate simpleJdbcTemplate; // or use NamedParameterJdbcTemplate
+	final String INSERT_WITH_NAME_PLACEHOLDER = "INSERT INTO MEMBER (ID, NAME, POINT) VALUES (:id, :name, :point)";
 	
 	@Before
 	public void setUp() {
@@ -26,7 +27,27 @@ public class JdbcSqlParameterTest {
 				.build();
 		this.simpleJdbcTemplate = new SimpleJdbcTemplate(db);
 	}
-	
+	@Test
+	public void SqlSearchMethod() {
+		Member m1 = new Member(1, "jsjg73", 1.5f);
+		Member m2 = new Member(2, "teneloper", 3.5f);
+		
+		SqlParameterSource m1Params = new BeanPropertySqlParameterSource(m1);
+		SqlParameterSource m2Params = new BeanPropertySqlParameterSource(m2);
+		
+		
+		this.simpleJdbcTemplate.update(INSERT_WITH_NAME_PLACEHOLDER, new BeanPropertySqlParameterSource(m1));
+		this.simpleJdbcTemplate.update(INSERT_WITH_NAME_PLACEHOLDER, new BeanPropertySqlParameterSource(m2));
+		
+		assertThat(count(), is(2));
+		
+		float point = this.simpleJdbcTemplate.queryForLong("SELECT POINT FROM MEMBER WHERE ID = :id", m1Params);
+		int id = this.simpleJdbcTemplate.queryForInt("SELECT ID FROM MEMBER WHERE ID = :id", m1Params);
+		String name = this.simpleJdbcTemplate.queryForObject("SELECT name FROM MEMBER WHERE ID = :id", String.class, m1Params);
+		assertThat(id, is(m1.id));
+		assertThat(name, is(m1.name));
+//		assertThat(point, is(m1.point));
+	}
 	@Test
 	public void mapSqlPrameterSource() {
 		MapSqlParameterSource params = new MapSqlParameterSource()
