@@ -18,6 +18,7 @@ public class JdbcSqlParameterTest {
 	EmbeddedDatabase db;
 	SimpleJdbcTemplate simpleJdbcTemplate; // or use NamedParameterJdbcTemplate
 	final String INSERT_WITH_NAME_PLACEHOLDER = "INSERT INTO MEMBER (ID, NAME, POINT) VALUES (:id, :name, :point)";
+	final String INSERT_WITH_QUESTION_PLACEHOLDER = "INSERT INTO MEMBER (ID, NAME, POINT) VALUES (?, ?, ?)";
 	
 	@Before
 	public void setUp() {
@@ -29,8 +30,8 @@ public class JdbcSqlParameterTest {
 	}
 	@Test
 	public void SqlSearchMethod() {
-		Member m1 = new Member(1, "jsjg73", 1.5f);
-		Member m2 = new Member(2, "teneloper", 3.5f);
+		Member m1 = new Member(1, "jsjg73", 1.5);
+		Member m2 = new Member(2, "teneloper", 3.5);
 		
 		SqlParameterSource m1Params = new BeanPropertySqlParameterSource(m1);
 		SqlParameterSource m2Params = new BeanPropertySqlParameterSource(m2);
@@ -41,12 +42,12 @@ public class JdbcSqlParameterTest {
 		
 		assertThat(count(), is(2));
 		
-		float point = this.simpleJdbcTemplate.queryForLong("SELECT POINT FROM MEMBER WHERE ID = :id", m1Params);
+		double point = this.simpleJdbcTemplate.queryForObject("SELECT POINT FROM MEMBER WHERE ID = :id", Double.class,m1Params);
 		int id = this.simpleJdbcTemplate.queryForInt("SELECT ID FROM MEMBER WHERE ID = :id", m1Params);
 		String name = this.simpleJdbcTemplate.queryForObject("SELECT name FROM MEMBER WHERE ID = :id", String.class, m1Params);
 		assertThat(id, is(m1.id));
 		assertThat(name, is(m1.name));
-//		assertThat(point, is(m1.point));
+		assertThat(point, is(m1.point));
 	}
 	@Test
 	public void mapSqlPrameterSource() {
@@ -58,7 +59,7 @@ public class JdbcSqlParameterTest {
 	}
 	@Test
 	public void beanPropertySqlParameterSource() {
-		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(new Member(2, "teneloper73", 3.8f));
+		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(new Member(2, "teneloper73", 3.8));
 		String query ="INSERT INTO MEMBER (ID, NAME, POINT) VALUES (:id, :name, :point)";
 		assertAdd(params);
 	}
@@ -85,7 +86,7 @@ public class JdbcSqlParameterTest {
 	static class Member{
 		int id;
 		String name;
-		float point;
+		double point;
 		public int getId() {
 			return id;
 		}
@@ -98,13 +99,13 @@ public class JdbcSqlParameterTest {
 		public void setName(String name) {
 			this.name = name;
 		}
-		public float getPoint() {
+		public double getPoint() {
 			return point;
 		}
 		public void setPoint(float point) {
 			this.point = point;
 		}
-		public Member(int id, String name, float point) {
+		public Member(int id, String name, double point) {
 			this.id = id;
 			this.name = name;
 			this.point = point;
