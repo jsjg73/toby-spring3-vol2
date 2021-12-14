@@ -6,6 +6,7 @@ import static org.junit.Assert.assertThat;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -25,8 +26,14 @@ public class JdbcSqlParameterTest {
 		db = new EmbeddedDatabaseBuilder()
 				.setType(EmbeddedDatabaseType.HSQL)
 				.addScript("classpath:springbook/learningtest/spring/jdbc/test-member.sql")
+				.addScript("classpath:springbook/learningtest/spring/jdbc/test-data.sql")
 				.build();
 		this.simpleJdbcTemplate = new SimpleJdbcTemplate(db);
+		assertThat(count(), is(2));
+	}
+	@Test(expected = IncorrectResultSizeDataAccessException.class)
+	public void exceptionQueryForInt() {
+		this.simpleJdbcTemplate.queryForInt("SELECT ID FROM MEMBER");
 	}
 	@Test
 	public void SqlSearchMethod() {
@@ -39,8 +46,6 @@ public class JdbcSqlParameterTest {
 		
 		this.simpleJdbcTemplate.update(INSERT_WITH_NAME_PLACEHOLDER, new BeanPropertySqlParameterSource(m1));
 		this.simpleJdbcTemplate.update(INSERT_WITH_NAME_PLACEHOLDER, new BeanPropertySqlParameterSource(m2));
-		
-		assertThat(count(), is(2));
 		
 		double point = this.simpleJdbcTemplate.queryForObject("SELECT POINT FROM MEMBER WHERE ID = :id", Double.class,m1Params);
 		int id = this.simpleJdbcTemplate.queryForInt("SELECT ID FROM MEMBER WHERE ID = :id", m1Params);
