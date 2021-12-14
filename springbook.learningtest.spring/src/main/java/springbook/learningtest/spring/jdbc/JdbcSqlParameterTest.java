@@ -3,11 +3,14 @@ package springbook.learningtest.spring.jdbc;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.IncorrectResultSetColumnCountException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -15,6 +18,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.util.Assert;
 
 public class JdbcSqlParameterTest {
 	EmbeddedDatabase db;
@@ -32,6 +36,12 @@ public class JdbcSqlParameterTest {
 		this.simpleJdbcTemplate = new SimpleJdbcTemplate(db);
 		assertThat(count(), is(2));
 	}
+	@Test
+	public void find() {
+		List<Member> members = this.simpleJdbcTemplate.query("SELECT * FROM MEMBER", new BeanPropertyRowMapper<>(Member.class));
+		assertThat(members.size(), is(2));
+	}
+	
 	@Test(expected = IncorrectResultSizeDataAccessException.class)
 	public void wrongResultSize() {
 		this.simpleJdbcTemplate.queryForInt("SELECT ID FROM MEMBER");
@@ -93,7 +103,7 @@ public class JdbcSqlParameterTest {
 		db.shutdown();
 	}
 	
-	static class Member{
+	public static class Member{
 		int id;
 		String name;
 		double point;
@@ -115,6 +125,7 @@ public class JdbcSqlParameterTest {
 		public void setPoint(float point) {
 			this.point = point;
 		}
+		public Member() {}
 		public Member(int id, String name, double point) {
 			this.id = id;
 			this.name = name;
