@@ -7,6 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import org.springframework.jdbc.IncorrectResultSetColumnCountException;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -32,8 +33,12 @@ public class JdbcSqlParameterTest {
 		assertThat(count(), is(2));
 	}
 	@Test(expected = IncorrectResultSizeDataAccessException.class)
-	public void exceptionQueryForInt() {
+	public void wrongResultSize() {
 		this.simpleJdbcTemplate.queryForInt("SELECT ID FROM MEMBER");
+	}
+	@Test(expected = IncorrectResultSetColumnCountException.class)
+	public void wrongResultSetColumCount() {
+		this.simpleJdbcTemplate.queryForInt("SELECT ID, POINT FROM MEMBER WHERE ID = 990");
 	}
 	@Test
 	public void SqlSearchMethod() {
