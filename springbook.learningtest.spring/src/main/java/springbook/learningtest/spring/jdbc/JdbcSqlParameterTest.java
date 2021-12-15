@@ -37,6 +37,20 @@ public class JdbcSqlParameterTest {
 		assertThat(count(), is(2));
 	}
 	@Test
+	public void batchInsert() {
+		Member m1 = new Member(1, "jsjg73", 1.5);
+		Member m2 = new Member(2, "teneloper", 3.5);
+		
+		int[] affected = this.simpleJdbcTemplate.batchUpdate(INSERT_WITH_NAME_PLACEHOLDER,
+				new SqlParameterSource[] {
+						new BeanPropertySqlParameterSource(m1),
+						new BeanPropertySqlParameterSource(m2)
+				});
+		assertThat(affected[0], is(1));
+		assertThat(affected[1], is(1));
+	}
+	
+	@Test
 	public void find() {
 		List<Member> members = this.simpleJdbcTemplate.query("SELECT * FROM MEMBER", new BeanPropertyRowMapper<>(Member.class));
 		assertThat(members.size(), is(2));
