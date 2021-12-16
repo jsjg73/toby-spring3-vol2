@@ -4,6 +4,8 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
@@ -25,5 +27,9 @@ public class BeanIdentifierTest {
 		
 		assertThat(hi, sameInstance(hello));
 		assertThat(hi, sameInstance(¹Ý°¡¿ö));
+		
+		assertThat(ac.getBean("hello_alias",Hello.class), notNullValue());
 	}
+	
+	
 }

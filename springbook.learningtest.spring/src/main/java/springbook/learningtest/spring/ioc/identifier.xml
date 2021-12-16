@@ -9,4 +9,5 @@
 	
 	<bean id="hello" name="hi,/hello;반가워" class="springbook.learningtest.spring.ioc.bean.Hello"/>
 	
+	<alias name="hello" alias="hello_alias"/>
 </beans>
