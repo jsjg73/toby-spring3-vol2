@@ -20,6 +20,8 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.util.Assert;
 
+import springbook.learningtest.spring.embeddeddb.MemberEmbeddedDB;
+
 public class JdbcSqlParameterTest {
 	EmbeddedDatabase db;
 	SimpleJdbcTemplate simpleJdbcTemplate; // or use NamedParameterJdbcTemplate
@@ -28,11 +30,7 @@ public class JdbcSqlParameterTest {
 	
 	@Before
 	public void setUp() {
-		db = new EmbeddedDatabaseBuilder()
-				.setType(EmbeddedDatabaseType.HSQL)
-				.addScript("classpath:springbook/learningtest/spring/jdbc/test-member.sql")
-				.addScript("classpath:springbook/learningtest/spring/jdbc/test-data.sql")
-				.build();
+		db = MemberEmbeddedDB.getEmbeddedDatabase();
 		this.simpleJdbcTemplate = new SimpleJdbcTemplate(db);
 		assertThat(count(), is(2));
 	}
