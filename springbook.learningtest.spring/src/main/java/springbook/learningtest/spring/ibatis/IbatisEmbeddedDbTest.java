@@ -22,24 +22,24 @@ import com.ibatis.sqlmap.client.SqlMapClient;
 import springbook.learningtest.spring.embeddeddb.MemberEmbeddedDB;
 import springbook.learningtest.spring.jdbc.Member;
 
-public class IbatisTest {
+public class IbatisEmbeddedDbTest {
 //	private EmbeddedDatabase db;
 	
-	@Test
+	@Test(expected = AssertionError.class)
 	public void ibatis() {
 		ApplicationContext ac = new AnnotationConfigApplicationContext(IbatisConfig.class);
 		IbatisDao dao = ac.getBean(IbatisDao.class);
 		
-//		dao.deleteAll();
-		dao.add(new Member(1,"jsjg73", 1.5));
+		dao.deleteAll();
+		dao.add(new Member(1,"jsjg73", 1.3));
 		Member m = dao.select(1);
 		assertThat(m.getId(), is(1));
 		assertThat(m.getName(), is("jsjg73"));
-		assertTrue(m.getPoint()==1.5);
-		List<Member> list = dao.selectAll();
-		for(Member mm : list) {
-			System.out.println(mm.getPoint());
-		}
+		
+		
+//		부동소수점이 db에 저장될 때 주의사항
+		assertTrue(m.getPoint()==1.3);
+		
 	}
 	
 	public static class IbatisDao{

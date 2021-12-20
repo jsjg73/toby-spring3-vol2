@@ -34,6 +34,17 @@ public class JdbcSqlParameterTest {
 		this.simpleJdbcTemplate = new SimpleJdbcTemplate(db);
 		assertThat(count(), is(2));
 	}
+	
+	@Test
+	public void incorrectInsert() {
+		Member m = new Member(3, "dobule", 2.3);
+		SqlParameterSource mParams = new BeanPropertySqlParameterSource(m);
+		this.simpleJdbcTemplate.update(INSERT_WITH_NAME_PLACEHOLDER, mParams);
+		
+		double point = this.simpleJdbcTemplate.queryForObject("SELECT POINT FROM MEMBER WHERE ID = :id", Double.class, mParams);
+		System.out.println(point);
+	}
+	
 	@Test
 	public void batchInsert() {
 		Member m1 = new Member(1, "jsjg73", 1.5);
@@ -109,6 +120,7 @@ public class JdbcSqlParameterTest {
 	private int count() {
 		return this.simpleJdbcTemplate.queryForInt("SELECT COUNT(*) FROM MEMBER");	
 	}
+	
 	
 	@After
 	public void tearDown() {
