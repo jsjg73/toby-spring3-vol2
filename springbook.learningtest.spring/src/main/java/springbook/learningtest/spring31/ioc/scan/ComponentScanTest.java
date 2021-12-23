@@ -18,7 +18,7 @@ public class ComponentScanTest {
 		ApplicationContext ac = new AnnotationConfigApplicationContext(ConfigCustomNameGenerator.class, ConfigDefaultNameGenerator.class);
 		String[] beanNames = ac.getBeanNamesForType(ServiceCustom.class);
 		
-		assertThat(ac.getBean("serviceCustom_jsjg73"), notNullValue());
+		assertThat(ac.getBean("serviceCustom_MyBeanNameGenerator"), notNullValue());
 		
 		assertThat(ac.getBean("serviceDefault"), notNullValue());
 	}

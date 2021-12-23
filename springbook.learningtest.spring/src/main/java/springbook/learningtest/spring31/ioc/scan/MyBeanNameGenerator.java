@@ -7,6 +7,6 @@ import org.springframework.context.annotation.AnnotationBeanNameGenerator;
 public class MyBeanNameGenerator extends AnnotationBeanNameGenerator{
 	@Override
 	public String generateBeanName(BeanDefinition definition, BeanDefinitionRegistry registry) {
-		return super.generateBeanName(definition, registry)+"_jsjg73";
+		return super.generateBeanName(definition, registry)+"_MyBeanNameGenerator";
 	}
 }
